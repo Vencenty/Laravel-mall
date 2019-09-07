@@ -1,0 +1,16 @@
+{
+    "Id": "ID",
+    "Title": "名称",
+    "password": "密码",
+    "Desc": "副标题",
+    "Stock": "库存",
+    "Username": "用户名",
+    "Email": "邮箱",
+    "Thumb": "缩略图",
+    "Max price": "最高价格",
+    "Min price": "最低价格",
+    "Real price": "实际价格",
+    "Price": "价格",
+    "Created at":"创建时间",
+    "Updated at":"更新时间"
+}
