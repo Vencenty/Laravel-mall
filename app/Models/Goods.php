@@ -33,6 +33,20 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Goods whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Goods whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int|null $display_order 排序
+ * @property string|null $sub_title 副标题
+ * @property int|null $sales 销量
+ * @property int|null $real_sales 实际销量
+ * @property int|null $category_id
+ * @property int|null $status 0下架 1- 上架
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\GoodsTag[] $tags
+ * @property-read int|null $tags_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Goods whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Goods whereDisplayOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Goods whereRealSales($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Goods whereSales($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Goods whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Goods whereSubTitle($value)
  */
 class Goods extends Model
 {
@@ -40,7 +54,7 @@ class Goods extends Model
 
     public function tags()
     {
-        return $this->hasMany(GoodsTag::class, 'id', 'tag_id');
+        return $this->belongsToMany(GoodsTag::class, 'goods_tag_map', 'goods_id', 'tag_id');
     }
 
 }

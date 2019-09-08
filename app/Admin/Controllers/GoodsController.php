@@ -3,7 +3,9 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Goods;
+use App\Models\GoodsCategory;
 use App\Models\GoodsTag;
+use App\Models\User;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -28,21 +30,30 @@ class GoodsController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Goods);
-
-        $grid->column('display_order', __('Display order'))->editable()->sortable();
-        $grid->column('title', __('Title'))->editable()->setAttributes(['text-decoration'=>'none']);
-        $grid->column('thumb', __('Thumb'))->image(env('APP_UPLOAD_PATH'), 50, 50);
-        $grid->column('tag_id', __('Tag id'))->display(function ($tagId) {
-            return GoodsTag::find($tagId)->title ?? null;
-        })->label();
+        $grid->column('display_order', __('Display order'))->editable()->sortable()->width(80);
+        $grid->column('title', __('Title'))->editable()->width(200);
+        $grid->column('thumb', __('Thumb'))->image(env('APP_UPLOAD_PATH'), 50, 50)->width(100);
+        $grid->column('price', __('Price'))->editable();
         $grid->column('stock', __('Stock'))->editable();
-        $grid->column('price', __('Max price'))->display(function () {
-            return "{$this->min_price} ~ {$this->max_price}";
+        $grid->column('sales', __('Sales'))->sortable()->width(100);
+        $grid->column('real_sales', __('Real sales'))->sortable()->help('不包含已维权订单')->width(150);
+
+//        $grid->column('tags', __('Tags'))->display(function ($tags) {
+//            $tags = array_map(function ($tag) {
+//                return "<span class='label label-success'>{$tag['title']}</span>";
+//            }, $tags);
+//            return join('&nbsp;', $tags);
+//        })->label();
+
+
+
+
+
+        $grid->column('tags', __('Tags'))->pluck('title','id')->label();
+
+        $grid->column('category_id', __('Category id'))->display(function ($categoryId) {
+            return GoodsCategory::find($categoryId)->title ?? null;
         });
-        $grid->column('real_price', __('Real price'));
-        $grid->column('price', __('Price'));
-        $grid->column('group_id', __('Group id'));
-        $grid->column('category_id', __('Category id'));
         $grid->column('status', __('Status'));
         $grid->column('created_at')->filter('range', 'date');
         return $grid;

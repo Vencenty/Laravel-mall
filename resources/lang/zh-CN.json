@@ -29,5 +29,8 @@
     "Group id": "商品组",
     "Category id": "所属分类",
     "Sub title": "副标题",
-    "Tag title": "标签"
+    "Tag title": "标签",
+    "Sales": "销量",
+    "Real sales": "实际销量",
+    "Tags": "标签"
 }
