@@ -8,7 +8,7 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
-use Illuminate\Support\Str;
+use Illuminate\Support\MessageBag;
 use Tests\Models\Tag;
 
 class GoodsController extends AdminController
@@ -18,7 +18,7 @@ class GoodsController extends AdminController
      *
      * @var string
      */
-    protected $title = 'App\Models\Goods';
+    protected $title = '商品';
 
     /**
      * Make a grid builder.
@@ -29,36 +29,22 @@ class GoodsController extends AdminController
     {
         $grid = new Grid(new Goods);
 
-        $grid->column('id', __('Id'));
-        $grid->column('title', __('Title'))->setAttributes(['style' => 'color:red']);
-        $grid->column('desc', __('Desc'))->display(function ($desc) {
-            return Str::limit($desc, 5, '......');
+        $grid->column('display_order', __('Display order'))->editable()->sortable();
+        $grid->column('title', __('Title'))->editable()->setAttributes(['text-decoration'=>'none']);
+        $grid->column('thumb', __('Thumb'))->image(env('APP_UPLOAD_PATH'), 50, 50);
+        $grid->column('tag_id', __('Tag id'))->display(function ($tagId) {
+            return GoodsTag::find($tagId)->title ?? null;
+        })->label();
+        $grid->column('stock', __('Stock'))->editable();
+        $grid->column('price', __('Max price'))->display(function () {
+            return "{$this->min_price} ~ {$this->max_price}";
         });
-        $grid->column('stock', __('Stock'));
-        $grid->column('thumb', __('Thumb'))->display(function ($thumb) {
-            return Str::limit($thumb, 5, '......');
-        });
-        $grid->column('max_price', __('Max price'));
-        $grid->column('min_price', __('Min price'));
         $grid->column('real_price', __('Real price'));
         $grid->column('price', __('Price'));
-        $grid->column('tag_id', __('Tag id'))->display(function ($tagId) {
-            return GoodsTag::find($tagId)->title;
-        })->label();
-        $grid->column('status', __('status'))->display(function ($status) {
-            return (int)$status === 0 ? "下架" : "上架";
-        })->label();
         $grid->column('group_id', __('Group id'));
         $grid->column('category_id', __('Category id'));
-        $grid->column('created_at', __('Created at'))->sortable();
-        $grid->column('updated_at', __('Updated at'));
-
-        $grid->filter(function ($filter) {
-            // 设置created_at字段的范围查询
-            $filter->between('created_at', 'Created Time')->datetime();
-        });
-
-
+        $grid->column('status', __('Status'));
+        $grid->column('created_at')->filter('range', 'date');
         return $grid;
     }
 
@@ -72,9 +58,8 @@ class GoodsController extends AdminController
     {
         $show = new Show(Goods::findOrFail($id));
 
-        $show->field('id', __('Id'));
-        $show->field('title', __('Title'));
-        $show->field('desc', __('Desc'));
+        $show->field('display_order', __('Display order'));
+        $show->field('sub_title', __('Sub title'));
         $show->field('stock', __('Stock'));
         $show->field('thumb', __('Thumb'));
         $show->field('max_price', __('Max price'));
@@ -86,6 +71,7 @@ class GoodsController extends AdminController
         $show->field('tag_id', __('Tag id'));
         $show->field('group_id', __('Group id'));
         $show->field('category_id', __('Category id'));
+        $show->field('status', __('Status'));
 
         return $show;
     }
@@ -99,18 +85,9 @@ class GoodsController extends AdminController
     {
         $form = new Form(new Goods);
 
-        $form->text('title', __('Title'));
-        $form->text('desc', __('Desc'));
-        $form->number('stock', __('Stock'));
-        $form->text('thumb', __('Thumb'));
-        $form->decimal('max_price', __('Max price'));
-        $form->decimal('min_price', __('Min price'));
-        $form->decimal('real_price', __('Real price'));
-        $form->decimal('price', __('Price'));
-        $form->number('tag_id', __('Tag id'));
-        $form->number('group_id', __('Group id'));
-        $form->number('category_id', __('Category id'));
 
-        return $form;
+
     }
+
+
 }

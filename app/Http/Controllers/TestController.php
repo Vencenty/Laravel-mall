@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Goods;
-use App\Models\GoodsCategory;
-use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\UserGroup;
+use DebugBar\DebugBar;
+use Encore\Admin\Grid\Filter\Group;
 
 class TestController extends Controller
 {
     public function index()
     {
-        $r = \Hash::make('admin');
+
+        $r = UserGroup::find(3)->users()->get()->toArray();
+        print_r($r);
+        die;
+
+
     }
 }
