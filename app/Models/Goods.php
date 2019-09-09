@@ -57,4 +57,9 @@ class Goods extends Model
         return $this->belongsToMany(GoodsTag::class, 'goods_tag_map', 'goods_id', 'tag_id');
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(GoodsCategory::class, 'goods_category_map', 'goods_id', 'category_id');
+    }
+
 }

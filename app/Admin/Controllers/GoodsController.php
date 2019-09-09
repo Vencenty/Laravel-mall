@@ -40,11 +40,8 @@ class GoodsController extends AdminController
         $grid->column('stock', __('Stock'))->editable();
         $grid->column('sales', __('Sales'))->sortable()->width(100);
         $grid->column('real_sales', __('Real sales'))->sortable()->help('不包含已维权订单')->width(150);
-        $grid->column('tags', __('Tags'))->pluck('title','id')->label();
-
-        $grid->column('category_id', __('Category id'))->display(function ($categoryId) {
-            return GoodsCategory::find($categoryId)->title ?? null;
-        });
+        $grid->column('tags', __('Tags'))->pluck('title','id')->label()->width(120);
+        $grid->column('categories', __('Categories'))->pluck('title', 'id')->label()->width(120);
 
         $grid->column('status', __('Status'))->using(GoodsContract::COMMON_STATUS)->label(LabelContract::COMMON_STYLE);
         $grid->column('created_at')->filter('range', 'date');

@@ -14,8 +14,7 @@ class GoodsStatus extends RowAction
         $goods->status = !(int)$goods->status;
 
         $goods->save();
-
-
+        
         // 保存之后返回新的html到前端显示
         $html = $goods->status ? "<i class=\"fa fa-star-o\"></i>" : "<i class=\"fa fa-star\"></i>";
 
