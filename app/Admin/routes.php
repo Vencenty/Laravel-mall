@@ -16,6 +16,7 @@ Route::group([
     $router->resource('goods-groups', GoodsGroupController::class);
     $router->resource('goods-tags', GoodsTagController::class);
     $router->resource('users', UserController::class);
+    $router->resource('demo', ExampleController::class);
 
 
 });

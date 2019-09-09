@@ -18,4 +18,15 @@
  *
  */
 
+use App\Admin\Extensions\Toggle;
+use App\Admin\Forms\WangEditor;
+use Encore\Admin\Form;
+use Encore\Admin\Grid\Column;
+
+
 Encore\Admin\Form::forget(['map', 'editor']);
+
+Column::extend('popover', Toggle::class);
+
+
+Form::extend('editor',WangEditor::class);
