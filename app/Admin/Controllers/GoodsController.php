@@ -6,6 +6,7 @@ namespace App\Admin\Controllers;
 use App\Admin\Actions\Document\GoodsStatus;
 use App\Admin\Contracts\GoodsContract;
 use App\Models\Goods;
+use App\Models\GoodsTag;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -30,71 +31,8 @@ class GoodsController extends AdminController
 
 
         $grid->expandFilter();
-        $grid->filter(function(Grid\Filter $filter){
-
-            // 去掉默认的id过滤器
-            $filter->disableIdFilter();
-            // 在这里添加字段过滤器
-            $filter->like('title', __('Title'));
-
-            $filter->scope('male', '男性')->where('gender', 'm');
-
-// 多条件查询
-            $filter->scope('new', '最近修改')
-                ->whereDate('created_at', date('Y-m-d'))
-                ->orWhere('updated_at', date('Y-m-d'));
-
-// 关联关系查询
-            $filter->scope('address')->whereHas('profile', function ($query) {
-                $query->whereNotNull('address');
-            });
-
-            $filter->scope('trashed', '被软删除的数据')->onlyTrashed();
-            $filter->equal('column')->url();
-
-            $filter->equal('column')->email();
-
-            $filter->equal('column')->integer();
-
-            $filter->equal('column')->ip();
-
-            $filter->equal('column')->mac();
-
-            $filter->equal('column')->mobile();
-            $filter->equal('column')->select(['key' => 'value']);
-
-            $filter->in('column')->multipleSelect(['key' => 'value']);
-
-// 或者从api获取数据，api的格式参考model-form的multipleSelect组件
-$filter->in('column')->multipleSelect('api/users');
-
-// 或者从api获取数据，api的格式参考model-form的select组件
-$filter->equal('column')->select('api/users');
-            $filter->equal('released')->radio([
-                ''   => 'All',
-                0    => 'Unreleased',
-                1    => 'Released',
-            ]);
-            $filter->in('gender')->checkbox([
-                'm'    => 'Male',
-                'f'    => 'Female',
-            ]);
-            $filter->where(function ($query) {
-                switch ($this->input) {
-                    case 'yes':
-                        // custom complex query if the 'yes' option is selected
-                        $query->has('somerelationship');
-                        break;
-                    case 'no':
-                        $query->doesntHave('somerelationship');
-                        break;
-                }
-            }, 'Label of the field', 'name_for_url_shortcut')->radio([
-                '' => 'All',
-                'yes' => 'Only with relationship',
-                'no' => 'Only without relationship',
-            ]);
-        });
+//        $grid->filter(function(Grid\Filter $filter){
+//        });
 
 
 
@@ -162,6 +100,8 @@ $filter->equal('column')->select('api/users');
             $form->text('sub_title', __('Sub title'));
             $form->image('thumb', __('Thumb'))->required();
             $form->radio('status', __('Status'))->options(['下架', '上架'])->default(0);
+            $form->multipleSelect('tags.title')->options(GoodsTag::pluck('title', 'id'));
+
         })->tab('库存/规格', function (Form $form) {
             $form->number('stock', __('Stock'));
             $form->radio('reduce_stock_mode', __('Reduce stock mode'))->options(GoodsContract::REDUCE_STOCK_MODE)->default(0);
@@ -176,6 +116,5 @@ $filter->equal('column')->select('api/users');
 
         return $form;
     }
-
 
 }

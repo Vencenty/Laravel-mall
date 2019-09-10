@@ -24,13 +24,6 @@ class GoodsCategoryController extends Controller
         });
     }
 
-    public function store()
-    {
-        $r = request()->input();
-        $r = json_decode($r['_order']);
-        print_r($r);
-        die;
 
-    }
 
 }
