@@ -101,6 +101,7 @@ class GoodsController extends AdminController
             $form->image('thumb', __('Thumb'))->required();
             $form->radio('status', __('Status'))->options(['下架', '上架'])->default(0);
             $form->multipleSelect('tags.title')->options(GoodsTag::pluck('title', 'id'));
+            $form->distpicker(['province_id', 'city_id', 'district_id']);
 
         })->tab('库存/规格', function (Form $form) {
             $form->number('stock', __('Stock'));
@@ -110,10 +111,9 @@ class GoodsController extends AdminController
         })->tab('参数', function (Form $form) {
 
         });
-        $form->text('title', __('Title'));
-        $form->text('stock', __('Title'));
-        $form->number('price', __('Price'));
-
+//        $form->text('title', __('Title'));
+//        $form->text('stock', __('Title'));
+//        $form->number('price', __('Price'));
         return $form;
     }
 

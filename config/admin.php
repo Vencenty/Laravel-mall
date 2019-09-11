@@ -395,6 +395,11 @@ return [
     |
     */
     'extensions' => [
-
+        'china-distpicker' => [
+            'enable' => true,
+        ],
+        'material-ui' => [
+            'enable' => true
+        ]
     ],
 ];

@@ -9,10 +9,15 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "elasticsearch/elasticsearch": "^7.0",
         "encore/laravel-admin": "^1.7",
         "fideloper/proxy": "^4.0",
         "intervention/image": "^2.5",
+        "jxlwqq/material-ui": "^1.0",
         "laravel-admin-ext/chartjs": "^1.0",
+        "laravel-admin-ext/china-distpicker": "^1.4",
+        "laravel-admin-ext/grid-lightbox": "^1.0",
+        "laravel-admin-ext/media-manager": "^1.0",
         "laravel-admin-ext/redis-manager": "^1.1",
         "laravel/framework": "~5.8",
         "laravel/tinker": "^1.0"

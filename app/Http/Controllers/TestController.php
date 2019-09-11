@@ -13,8 +13,7 @@ class TestController extends Controller
     {
 
         $r = UserGroup::find(3)->users()->get()->toArray();
-        print_r($r);
-        die;
+        return response($r);
 
 
     }
